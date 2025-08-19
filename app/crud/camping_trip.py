@@ -124,7 +124,7 @@ def get_camping_trips_for_map(db: Session, user_id: int, include_own: bool = Tru
             "description": trip.description,
             "start_date": trip.start_date,
             "end_date": trip.end_date,
-            "notes": trip.notes,
+            "trip_notes": trip.trip_notes,
             "weather_conditions": trip.weather_conditions,
             "group_size": trip.group_size,
             "created_at": trip.created_at,

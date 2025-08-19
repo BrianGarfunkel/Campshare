@@ -12,7 +12,7 @@ class CampingTrip(Base):
     description = Column(Text)
     start_date = Column(DateTime, nullable=False)
     end_date = Column(DateTime, nullable=False)
-    notes = Column(Text)
+    trip_notes = Column(Text)
     weather_conditions = Column(String)
     group_size = Column(Integer)
     created_at = Column(DateTime(timezone=True), server_default=func.now())

@@ -8,7 +8,7 @@ class CampingTripBase(BaseModel):
     description: Optional[str] = None
     start_date: datetime
     end_date: datetime
-    notes: Optional[str] = None
+    trip_notes: Optional[str] = None
     weather_conditions: Optional[str] = None
     group_size: Optional[int] = None
 
@@ -22,7 +22,7 @@ class CampingTripUpdate(BaseModel):
     description: Optional[str] = None
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
-    notes: Optional[str] = None
+    trip_notes: Optional[str] = None
     weather_conditions: Optional[str] = None
     group_size: Optional[int] = None
 
