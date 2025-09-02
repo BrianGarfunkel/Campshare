@@ -23,90 +23,42 @@ class OutdoorActivitiesAPI:
             return self._get_mock_campgrounds(query, limit)
         
         try:
-            # Step 1: Search for parks that match the query
-            parks = await self._search_parks(query, min(limit, 5))  # Limit parks to avoid too many API calls
-            
-            # Step 2: Get campgrounds for each park
-            all_campgrounds = []
-            for park in parks:
-                park_campgrounds = await self._get_campgrounds_for_park(park['park_id'], limit // len(parks) if len(parks) > 0 else limit)
-                all_campgrounds.extend(park_campgrounds)
-                if len(all_campgrounds) >= limit:
-                    break
-            
-            return all_campgrounds[:limit]
-            
+            print(f"DEBUG: Headers: {self.headers}")
+            async with httpx.AsyncClient() as client:
+                response = await client.get(
+                    f"{self.base_url}/search",
+                    headers=self.headers,
+                    params={
+                        "query": query,
+                        "limit": limit,
+                        "type": "campground"  # Assuming the API supports this filter
+                    }
+                )
+                response.raise_for_status()
+                data = response.json()
+                return self._parse_campground_data(data)
         except Exception as e:
             print(f"API Error: {e}")
             return self._get_mock_campgrounds(query, limit)
-
-    async def _search_parks(self, query: str, limit: int = 5) -> List[Dict]:
-        """Search for parks using the searchForParks endpoint."""
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(
-                    f"{self.base_url}/searchForParks",
-                    headers=self.headers,
-                    params={
-                        "keyword": query,  # Use 'keyword' parameter for search
-                        "start": 0,
-                        "limit": limit
-                    }
-                )
-                response.raise_for_status()
-                data = response.json()
-                return data.get('results', [])  # Use 'results' based on the API response
-        except Exception as e:
-            print(f"Park search error: {e}")
-            return []
-
-    async def _get_campgrounds_for_park(self, park_id: str, limit: int = 10) -> List[Dict]:
-        """Get campgrounds for a specific park using getCampgroundsByParkId endpoint."""
-        try:
-            async with httpx.AsyncClient() as client:
-                response = await client.get(
-                    f"{self.base_url}/parks/{park_id}/campgrounds",
-                    headers=self.headers,
-                    params={
-                        "start": 0,
-                        "limit": limit
-                    }
-                )
-                response.raise_for_status()
-                data = response.json()
-                return self._parse_campground_data(data.get('results', []))  # Use 'results' based on the API response
-        except Exception as e:
-            print(f"Campground search error for park {park_id}: {e}")
-            return []
-
-    def _parse_campground_data(self, api_data: List[Dict]) -> List[Dict]:
+    
+    def _parse_campground_data(self, api_data: Dict) -> List[Dict]:
         """Parse API response into our campground format."""
         campgrounds = []
-        for item in api_data:
-            # Build location string carefully to avoid quote issues
-            park = item.get('park', 'Unknown Park')
-            city = item.get('city', '')
-            state = item.get('state', '')
-            location_parts = [park]
-            if city:
-                location_parts.append(city)
-            if state:
-                location_parts.append(state)
-            location = ', '.join(location_parts)
-            
+        # This will need to be adjusted based on the actual API response structure
+        for item in api_data.get('results', []):
             campground = {
                 'name': item.get('name', 'Unknown Campground'),
-                'location': location,
+                'location': item.get('location', 'Unknown Location'),
                 'description': item.get('description', ''),
-                'latitude': item.get('latitude'),
-                'longitude': item.get('longitude'),
-                'amenities': json.dumps(item.get('equipments', [])),  # Use 'equipments' from API
-                'external_id': item.get('campground_id'),  # Use 'campground_id' from API
+                'latitude': item.get('lat'),
+                'longitude': item.get('lng'),
+                'amenities': json.dumps(item.get('amenities', [])),
+                'external_id': item.get('id'),
                 'source_api': 'rapidapi_outdoor'
             }
             campgrounds.append(campground)
         return campgrounds
-
+    
     def _get_mock_campgrounds(self, query: str, limit: int) -> List[Dict]:
         """Return mock campground data for development/testing."""
         mock_campgrounds = [
@@ -132,6 +84,7 @@ class OutdoorActivitiesAPI:
             },
             {
                 'name': 'Lake Tahoe Campground',
+                'location': 'Lake Tahoe, CA',
                 'description': 'Lakeside camping with mountain views',
                 'latitude': 39.0968,
                 'longitude': -120.0324,
