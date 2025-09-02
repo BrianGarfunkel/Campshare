@@ -85,7 +85,7 @@ class OutdoorActivitiesAPI:
         for item in api_data:
             campground = {
                 "name": item.get("name", "Unknown Campground"),
-                "location": f"{item.get(\"park\", \"Unknown Park\")}, {item.get(\"city\", \"\")}, {item.get(\"state\", \"\")}".strip(", "),
+                "location": f"{item.get("park", "Unknown Park")}, {item.get("city", "")}, {item.get("state", "")}".strip(", "),
                 "description": item.get("description", ""),
                 "latitude": item.get("latitude"),
                 "longitude": item.get("longitude"),
