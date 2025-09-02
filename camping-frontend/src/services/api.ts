@@ -14,7 +14,7 @@ import {
   FriendResponseData
 } from '../types/api';
 
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+const API_BASE_URL = 'https://campshare-3s2r.onrender.com/api/v1';
 
 // Create axios instance with base configuration
 const api = axios.create({
