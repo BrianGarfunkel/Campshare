@@ -13,9 +13,9 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title=settings.app_name,
     debug=settings.debug,
-    docs_url=None,  # Disable OpenAPI docs
-    redoc_url=None,  # Disable ReDoc
-    openapi_url=None  # Disable OpenAPI schema
+    
+    
+    
 )
 
 # Add CORS middleware
