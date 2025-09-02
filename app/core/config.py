@@ -11,12 +11,14 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 30
     
+    # API Settings
+    rapidapi_key: Optional[str] = None
+    
     # App Settings
     app_name: str = "Hiking App"
     debug: bool = True
     
-    class Config:
-        env_file = ".env"
+    model_config = {"env_file": ".env"}
 
 
 settings = Settings()
