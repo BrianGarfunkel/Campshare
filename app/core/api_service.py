@@ -153,3 +153,23 @@ class OutdoorActivitiesAPI:
 
 # Global instance
 outdoor_api = OutdoorActivitiesAPI()
+            {
+                "name": "Yellowstone Valley Campground",
+                "location": "Yellowstone National Park, WY",
+                "description": "Historic campground near Old Faithful with geothermal features",
+                "latitude": 44.4605,
+                "longitude": -110.8281,
+                "amenities": "[\"tent_sites\", \"rv_sites\", \"showers\", \"water\", \"geyser_views\"]",
+                "external_id": "mock_004",
+                "source_api": "mock_data"
+            },
+            {
+                "name": "Grand Teton Campground",
+                "location": "Grand Teton National Park, WY",
+                "description": "Mountain camping with spectacular Teton Range views",
+                "latitude": 43.7904,
+                "longitude": -110.6818,
+                "amenities": "[\"tent_sites\", \"hiking_trails\", \"wildlife_viewing\"]",
+                "external_id": "mock_005",
+                "source_api": "mock_data"
+            },
