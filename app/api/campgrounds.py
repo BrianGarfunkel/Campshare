@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.core.auth import get_current_active_user
-from app.core.api_service import outdoor_api
+from app.core.api_service import mock_campground_service
 from app.crud.campground import create_campground_if_not_exists, get_campground, search_campgrounds
 from app.schemas.campground import Campground, CampgroundCreate, CampgroundSearch
 from app.schemas.user import User
@@ -23,7 +23,7 @@ async def search_campgrounds_api(
     
     # If we don't have enough results, search external API
     if len(db_results) < limit:
-        api_results = await outdoor_api.search_campgrounds(q, limit - len(db_results))
+        api_results = await mock_campground_service.search_campgrounds(q, limit - len(db_results))
         
         # Save new campgrounds to database
         for api_campground in api_results:
