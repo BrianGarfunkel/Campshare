@@ -2,7 +2,7 @@ import json
 from typing import List, Dict, Optional
 
 
-class OutdoorActivitiesAPI:
+class MockCampgroundService:
     """Service to provide mock campground data."""
     
     def __init__(self):
@@ -15,9 +15,11 @@ class OutdoorActivitiesAPI:
     def _get_mock_campgrounds(self, query: str, limit: int) -> List[Dict]:
         """Return mock campground data for development/testing."""
         mock_campgrounds = [
+            # California
             {
                 "name": "Yosemite Valley Campground",
                 "location": "Yosemite National Park, CA",
+                "state": "CA",
                 "description": "Beautiful campground in the heart of Yosemite Valley with stunning granite cliffs",
                 "latitude": 37.7489,
                 "longitude": -119.5870,
@@ -28,6 +30,7 @@ class OutdoorActivitiesAPI:
             {
                 "name": "Big Sur Campground",
                 "location": "Big Sur, CA",
+                "state": "CA",
                 "description": "Scenic coastal camping with ocean views and redwood forests",
                 "latitude": 36.2704,
                 "longitude": -121.8081,
@@ -38,6 +41,7 @@ class OutdoorActivitiesAPI:
             {
                 "name": "Lake Tahoe Campground",
                 "location": "Lake Tahoe, CA",
+                "state": "CA",
                 "description": "Lakeside camping with mountain views and water activities",
                 "latitude": 39.0968,
                 "longitude": -120.0324,
@@ -48,6 +52,7 @@ class OutdoorActivitiesAPI:
             {
                 "name": "Yellowstone Valley Campground",
                 "location": "Yellowstone National Park, WY",
+                "state": "WY",
                 "description": "Historic campground near Old Faithful with geothermal features",
                 "latitude": 44.4605,
                 "longitude": -110.8281,
@@ -58,6 +63,7 @@ class OutdoorActivitiesAPI:
             {
                 "name": "Grand Teton Campground",
                 "location": "Grand Teton National Park, WY",
+                "state": "WY",
                 "description": "Mountain camping with spectacular Teton Range views",
                 "latitude": 43.7904,
                 "longitude": -110.6818,
@@ -70,15 +76,22 @@ class OutdoorActivitiesAPI:
         # Filter by query if provided
         if query:
             query_lower = query.lower()
-            filtered = [cg for cg in mock_campgrounds 
-                       if query_lower in cg["name"].lower() 
-                       or query_lower in cg["location"].lower()
-                       or query_lower in cg["description"].lower()
-                       or any(state in cg["location"] for state in ["CA", "WY", "CO", "UT", "AZ", "MT", "OR"] if query_lower in state.lower())]
+            
+            # If query is exactly 2 characters, treat it as a state abbreviation
+            if len(query) == 2:
+                filtered = [cg for cg in mock_campgrounds 
+                           if cg["state"].lower() == query_lower]
+            else:
+                # Regular text search on name, location, and description
+                filtered = [cg for cg in mock_campgrounds 
+                           if query_lower in cg["name"].lower() 
+                           or query_lower in cg["location"].lower()
+                           or query_lower in cg["description"].lower()]
+            
             return filtered[:limit]
         
         return mock_campgrounds[:limit]
 
 
 # Global instance
-outdoor_api = OutdoorActivitiesAPI()
+mock_campground_service = MockCampgroundService()
