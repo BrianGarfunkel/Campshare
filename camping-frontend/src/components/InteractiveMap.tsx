@@ -14,20 +14,7 @@ L.Icon.Default.mergeOptions({
 });
 
 // Custom icons for different trip types
-const createCustomIcon = (isOwnTrip: boolean, fullName: string) => {
-  // Generate initials from full name
-  const getInitials = (name: string) => {
-    const names = name.trim().split(' ');
-    if (names.length >= 2) {
-      return (names[0][0] + names[names.length - 1][0]).toUpperCase();
-    } else if (names.length === 1) {
-      return names[0][0].toUpperCase();
-    }
-    return isOwnTrip ? 'M' : 'F'; // fallback
-  };
-
-  const initials = getInitials(fullName);
-
+const createCustomIcon = (isOwnTrip: boolean) => {
   return L.divIcon({
     className: 'custom-marker',
     html: `
@@ -37,15 +24,8 @@ const createCustomIcon = (isOwnTrip: boolean, fullName: string) => {
         background-color: ${isOwnTrip ? '#3b82f6' : '#10b981'};
         border: 3px solid white;
         border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-weight: bold;
-        font-size: 12px;
         box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       ">
-        ${initials}
       </div>
     `,
     iconSize: [30, 30],
@@ -268,7 +248,7 @@ const InteractiveMap = forwardRef<InteractiveMapRef, InteractiveMapProps>(({ onR
           <Marker
             key={trip.id}
             position={[trip.campground.latitude, trip.campground.longitude]}
-            icon={createCustomIcon(trip.is_own_trip, trip.user.full_name)}
+            icon={createCustomIcon(trip.is_own_trip)}
           >
             <Popup>
               <div style={{ minWidth: '250px' }}>
