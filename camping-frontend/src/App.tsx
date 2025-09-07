@@ -3,6 +3,7 @@ import './App.css';
 import InteractiveMap, { InteractiveMapRef } from './components/InteractiveMap';
 import Login from './components/Login';
 import CampingTripForm from './components/CampingTripForm';
+import Friends from './components/Friends';
 import { authAPI } from './services/api';
 import { User } from './types/api';
 
@@ -11,6 +12,7 @@ function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [showTripForm, setShowTripForm] = useState(false);
+  const [showFriends, setShowFriends] = useState(false);
   const mapRef = useRef<InteractiveMapRef>(null);
 
   useEffect(() => {
@@ -122,6 +124,29 @@ function App() {
               >
                 ➕ Add Trip
               </button>
+
+              {/* Friends Button */}
+              <button
+                onClick={() => setShowFriends(true)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  backgroundColor: '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#2563eb'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#3b82f6'}
+              >
+                👥 Friends
+              </button>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               {user && (
@@ -155,42 +180,48 @@ function App() {
 
       {/* Main Content */}
       <main style={{ flex: 1, position: 'relative' }}>
-        <InteractiveMap ref={mapRef} />
-        
-        {/* Trip Form Modal Overlay */}
-        {showTripForm && (
-          <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000,
-            padding: '2rem'
-          }}>
-            <div style={{
-              position: 'relative',
-              maxHeight: '90vh',
-              overflowY: 'auto',
-              width: '100%',
-              maxWidth: '600px'
-            }}>
-              <CampingTripForm 
-                onTripCreated={() => {
-                  setShowTripForm(false);
-                  // Refresh the map to show the new trip
-                  setTimeout(() => {
-                    mapRef.current?.refreshTrips();
-                  }, 100);
-                }}
-                onCancel={() => setShowTripForm(false)}
-              />
-            </div>
-          </div>
+        {showFriends ? (
+          <Friends onBack={() => setShowFriends(false)} />
+        ) : (
+          <>
+            <InteractiveMap ref={mapRef} />
+            
+            {/* Trip Form Modal Overlay */}
+            {showTripForm && (
+              <div style={{
+                position: 'fixed',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                zIndex: 1000,
+                padding: '2rem'
+              }}>
+                <div style={{
+                  position: 'relative',
+                  maxHeight: '90vh',
+                  overflowY: 'auto',
+                  width: '100%',
+                  maxWidth: '600px'
+                }}>
+                  <CampingTripForm 
+                    onTripCreated={() => {
+                      setShowTripForm(false);
+                      // Refresh the map to show the new trip
+                      setTimeout(() => {
+                        mapRef.current?.refreshTrips();
+                      }, 100);
+                    }}
+                    onCancel={() => setShowTripForm(false)}
+                  />
+                </div>
+              </div>
+            )}
+          </>
         )}
       </main>
     </div>
