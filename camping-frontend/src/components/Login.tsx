@@ -51,7 +51,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             color: '#111827',
             marginBottom: '0.5rem'
           }}>
-            Camping with Friends
+            CampShare
           </h2>
           <p style={{ color: '#6b7280', fontSize: '0.875rem' }}>
             Sign in to your account

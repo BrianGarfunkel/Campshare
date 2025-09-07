@@ -99,7 +99,7 @@ function App() {
                 fontWeight: '600',
                 color: '#111827'
               }}>
-                🏕️ Camping with Friends
+                🏕️ CampShare
               </h1>
               
               {/* Add Trip Button */}
