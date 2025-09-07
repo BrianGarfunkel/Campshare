@@ -35,7 +35,7 @@ export interface CampingTrip {
   description: string;
   start_date: string;
   end_date: string;
-  notes: string | null;
+  trip_notes: string | null;
   weather_conditions: string | null;
   group_size: number;
   user_id: number;
@@ -50,7 +50,7 @@ export interface CampingTripWithDetails {
   description: string;
   start_date: string;
   end_date: string;
-  notes: string | null;
+  trip_notes: string | null;
   weather_conditions: string | null;
   group_size: number;
   created_at: string;

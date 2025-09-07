@@ -13,7 +13,7 @@ const CampingTripForm: React.FC<CampingTripFormProps> = ({ onTripCreated, onCanc
     description: '',
     start_date: '',
     end_date: '',
-    notes: '',
+    trip_notes: '',
     weather_conditions: '',
     group_size: 1,
     campground_search: '',
@@ -89,7 +89,7 @@ const CampingTripForm: React.FC<CampingTripFormProps> = ({ onTripCreated, onCanc
         description: formData.description,
         start_date: formData.start_date,
         end_date: formData.end_date,
-        notes: formData.notes || null,
+        trip_notes: formData.trip_notes || null,
         weather_conditions: formData.weather_conditions || null,
         group_size: formData.group_size,
         campground_id: formData.selected_campground.id
@@ -107,7 +107,7 @@ const CampingTripForm: React.FC<CampingTripFormProps> = ({ onTripCreated, onCanc
           description: '',
           start_date: '',
           end_date: '',
-          notes: '',
+          trip_notes: '',
           weather_conditions: '',
           group_size: 1,
           campground_search: '',
@@ -425,8 +425,8 @@ const CampingTripForm: React.FC<CampingTripFormProps> = ({ onTripCreated, onCanc
               Notes
             </label>
             <textarea
-              value={formData.notes}
-              onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
+              value={formData.trip_notes}
+              onChange={(e) => setFormData(prev => ({ ...prev, trip_notes: e.target.value }))}
               placeholder="Any additional notes..."
               rows={2}
               style={{

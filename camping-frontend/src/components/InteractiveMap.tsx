@@ -22,7 +22,7 @@ const createCustomIcon = (isOwnTrip: boolean) => {
         position: relative;
         width: 20px;
         height: 20px;
-        background-color: ${isOwnTrip ? '#3b82f6' : '#10b981'};
+        background-color: ${isOwnTrip ? '#3b82f6' : '#EA4335'};
         border: 2px solid white;
         border-radius: 50% 50% 50% 0;
         transform: rotate(-45deg);
@@ -92,7 +92,7 @@ const MapControls: React.FC<{
           <span>My Trips</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.75rem', color: '#6b7280' }}>
-          <div style={{ width: '0.75rem', height: '0.75rem', backgroundColor: '#10b981', borderRadius: '50%' }}></div>
+          <div style={{ width: '0.75rem', height: '0.75rem', backgroundColor: '#EA4335', borderRadius: '50%' }}></div>
           <span>Friends' Trips</span>
         </div>
       </div>
@@ -305,10 +305,10 @@ const InteractiveMap = forwardRef<InteractiveMapRef, InteractiveMapProps>(({ onR
                   )}
                 </div>
 
-                {trip.notes && (
+                {trip.trip_notes && (
                   <div style={{ marginBottom: '0.75rem' }}>
                     <p style={{ fontSize: '0.75rem', color: '#6b7280', margin: '0.25rem 0' }}>
-                      <strong>Notes:</strong> {trip.notes}
+                      <strong>Notes:</strong> {trip.trip_notes}
                     </p>
                   </div>
                 )}
