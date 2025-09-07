@@ -146,6 +146,19 @@ const InteractiveMap = forwardRef<InteractiveMapRef, InteractiveMapProps>(({ onR
     }
   };
 
+  const handleDeleteTrip = async (tripId: number) => {
+    if (window.confirm('Are you sure you want to delete this camping trip?')) {
+      try {
+        await campingTripAPI.delete(tripId);
+        // Refresh the trips list
+        fetchTrips();
+      } catch (error) {
+        console.error('Error deleting trip:', error);
+        alert('Failed to delete trip. Please try again.');
+      }
+    }
+  };
+
   // Expose fetchTrips function to parent component
   useImperativeHandle(ref, () => ({
     refreshTrips: fetchTrips
@@ -316,6 +329,30 @@ const InteractiveMap = forwardRef<InteractiveMapRef, InteractiveMapProps>(({ onR
                 <div style={{ fontSize: '0.75rem', color: '#6b7280' }}>
                   <strong>Amenities:</strong> {formatAmenities(trip.campground.amenities)}
                 </div>
+
+                {trip.is_own_trip && (
+                  <div style={{ marginTop: '1rem', paddingTop: '0.75rem', borderTop: '1px solid #e5e7eb' }}>
+                    <button
+                      onClick={() => handleDeleteTrip(trip.id)}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        backgroundColor: '#ef4444',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        fontSize: '0.875rem',
+                        fontWeight: '500',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#dc2626'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#ef4444'}
+                    >
+                      🗑️ Delete Trip
+                    </button>
+                  </div>
+                )}
               </div>
             </Popup>
           </Marker>
