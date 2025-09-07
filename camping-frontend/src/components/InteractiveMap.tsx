@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -111,7 +111,15 @@ const MapBoundsUpdater: React.FC<{ trips: CampingTripWithDetails[] }> = ({ trips
   return null;
 };
 
-const InteractiveMap: React.FC = () => {
+interface InteractiveMapProps {
+  onRefresh?: () => void;
+}
+
+export interface InteractiveMapRef {
+  refreshTrips: () => void;
+}
+
+const InteractiveMap = forwardRef<InteractiveMapRef, InteractiveMapProps>(({ onRefresh }, ref) => {
   const [trips, setTrips] = useState<CampingTripWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -132,6 +140,11 @@ const InteractiveMap: React.FC = () => {
       setLoading(false);
     }
   };
+
+  // Expose fetchTrips function to parent component
+  useImperativeHandle(ref, () => ({
+    refreshTrips: fetchTrips
+  }));
 
   useEffect(() => {
     // Small delay to ensure DOM is ready
@@ -331,6 +344,8 @@ const InteractiveMap: React.FC = () => {
       )}
     </div>
   );
-};
+});
+
+InteractiveMap.displayName = 'InteractiveMap';
 
 export default InteractiveMap;

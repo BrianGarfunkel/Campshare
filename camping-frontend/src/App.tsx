@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-import InteractiveMap from './components/InteractiveMap';
+import InteractiveMap, { InteractiveMapRef } from './components/InteractiveMap';
 import Login from './components/Login';
+import CampingTripForm from './components/CampingTripForm';
 import { authAPI } from './services/api';
 import { User } from './types/api';
 
@@ -9,6 +10,8 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showTripForm, setShowTripForm] = useState(false);
+  const mapRef = useRef<InteractiveMapRef>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -88,7 +91,7 @@ function App() {
             alignItems: 'center',
             height: '4rem'
           }}>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
               <h1 style={{
                 fontSize: '1.25rem',
                 fontWeight: '600',
@@ -96,6 +99,29 @@ function App() {
               }}>
                 🏕️ Camping with Friends
               </h1>
+              
+              {/* Add Trip Button */}
+              <button
+                onClick={() => setShowTripForm(true)}
+                style={{
+                  padding: '0.5rem 1rem',
+                  backgroundColor: '#10b981',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#059669'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#10b981'}
+              >
+                ➕ Add Trip
+              </button>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               {user && (
@@ -128,8 +154,44 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main style={{ flex: 1 }}>
-        <InteractiveMap />
+      <main style={{ flex: 1, position: 'relative' }}>
+        <InteractiveMap ref={mapRef} />
+        
+        {/* Trip Form Modal Overlay */}
+        {showTripForm && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '2rem'
+          }}>
+            <div style={{
+              position: 'relative',
+              maxHeight: '90vh',
+              overflowY: 'auto',
+              width: '100%',
+              maxWidth: '600px'
+            }}>
+              <CampingTripForm 
+                onTripCreated={() => {
+                  setShowTripForm(false);
+                  // Refresh the map to show the new trip
+                  setTimeout(() => {
+                    mapRef.current?.refreshTrips();
+                  }, 100);
+                }}
+                onCancel={() => setShowTripForm(false)}
+              />
+            </div>
+          </div>
+        )}
       </main>
     </div>
   );
