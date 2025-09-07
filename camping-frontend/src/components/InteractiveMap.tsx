@@ -20,8 +20,8 @@ const createCustomIcon = (isOwnTrip: boolean) => {
     html: `
       <div style="
         position: relative;
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         background-color: ${isOwnTrip ? '#3b82f6' : '#EA4335'};
         border: 2px solid white;
         border-radius: 50% 50% 50% 0;
@@ -33,16 +33,16 @@ const createCustomIcon = (isOwnTrip: boolean) => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%) rotate(45deg);
-          width: 8px;
-          height: 8px;
+          width: 10px;
+          height: 10px;
           background-color: white;
           border-radius: 50%;
         "></div>
       </div>
     `,
-    iconSize: [20, 20],
-    iconAnchor: [10, 20],
-    popupAnchor: [0, -20],
+    iconSize: [24, 24],
+    iconAnchor: [12, 24],
+    popupAnchor: [0, -24],
   });
 };
 
