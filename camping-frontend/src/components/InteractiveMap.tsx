@@ -19,18 +19,30 @@ const createCustomIcon = (isOwnTrip: boolean) => {
     className: 'custom-marker',
     html: `
       <div style="
-        width: 30px;
-        height: 30px;
+        position: relative;
+        width: 20px;
+        height: 20px;
         background-color: ${isOwnTrip ? '#3b82f6' : '#10b981'};
-        border: 3px solid white;
-        border-radius: 50%;
+        border: 2px solid white;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
         box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       ">
+        <div style="
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) rotate(45deg);
+          width: 8px;
+          height: 8px;
+          background-color: white;
+          border-radius: 50%;
+        "></div>
       </div>
     `,
-    iconSize: [30, 30],
-    iconAnchor: [15, 30],
-    popupAnchor: [0, -30],
+    iconSize: [20, 20],
+    iconAnchor: [10, 20],
+    popupAnchor: [0, -20],
   });
 };
 
